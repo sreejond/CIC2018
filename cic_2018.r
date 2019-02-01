@@ -15,7 +15,7 @@ setwd('C:/Users/sreej/Desktop/SDN/SDN_R_Code/CIC2018')
 # Clear the workspace
 rm(list = ls())
 
-# Load training data 
+# Load training data
 train_raw1 = read.csv("dataset/Processed Traffic Data for ML Algorithms/Thuesday-20-02-2018_TrafficForML_CICFlowMeter.csv", header=T)
 inTrain <- createDataPartition(y = train_raw1$Label, p = 0.2, list = FALSE)
 train_raw1 <- train_raw1[inTrain,]
@@ -70,44 +70,45 @@ names(train_raw)
 # Observe the distribution of labels
 sum_label <- aggregate(rep(1, d[1]), by = list(train_raw$Label), FUN = sum)
 names(sum_label) <- c("label", "count")
-barplot(beside = TRUE, (sum_label$count), 
-        names.arg = sum_label$label, ylim = c(0,max(sum_label$count)),
-        xlab = "Label", ylab = "Count",
-        col = "Blue", main = "The distribution of labels")
+barplot(beside = TRUE, (sum_label$count),
+       names.arg = sum_label$label, ylim = c(0,max(sum_label$count)),
+       xlab = "Label", ylab = "Count",
+       col = "Blue", main = "The distribution of labels")
 
 # print the distribution in numbers
 print(sum_label)
 
 
 # save the full dataset
-#write.csv(train_raw, file = "CIC2017_Full.csv")
+#write.csv(train_raw, file = "CIC2018_Full.csv", row.names=FALSE)
 
 
 
+train_raw = read.csv("dataset/CIC2018_Full.csv", header=T)
 
-# library("caret")
-# 
-# inTrain <- createDataPartition(y = train_raw$Label, p = 0.2, list = FALSE)
-# inTest <- createDataPartition(y = train_raw$Label, p = 0.2, list = FALSE)
-# testing_subset_train <- train_raw[inTrain,]
-# testing_subset_test <- train_raw[inTest,]
-# 
-# # save the subset dataset of training and testing
-# write.csv(testing_subset_train, file = "CIC2017_subset_train.csv")
-# write.csv(testing_subset_test, file = "CIC2017_subset_test.csv")
-# 
-# d = dim(testing_subset_train)
+library("caret")
+
+inTrain <- createDataPartition(y = train_raw$Label, p = 0.2, list = FALSE)
+inTest <- createDataPartition(y = train_raw$Label, p = 0.2, list = FALSE)
+testing_subset_train <- train_raw[inTrain,]
+testing_subset_test <- train_raw[inTest,]
+
+# save the subset dataset of training and testing
+write.csv(testing_subset_train, file = "CIC2018_subset_train.csv", row.names=FALSE)
+write.csv(testing_subset_test, file = "CIC2018_subset_test.csv", row.names=FALSE)
+
+d = dim(testing_subset_train)
 
 
 
 # Observe the distribution of new subset labels
-# rm(sum_label)
-# sum_label <- aggregate(rep(1, d[1]), by = list(testing_subset_train$Label), FUN = sum)
-# names(sum_label) <- c("label", "count")
-# barplot(beside = TRUE, (sum_label$count), 
-#         names.arg = sum_label$label, ylim = c(0,max(sum_label$count)),
-#         xlab = "Label", ylab = "Count",
-#         col = "Blue", main = "The distribution of labels")
-# 
+rm(sum_label)
+sum_label <- aggregate(rep(1, d[1]), by = list(testing_subset_train$Label), FUN = sum)
+names(sum_label) <- c("label", "count")
+barplot(beside = TRUE, (sum_label$count),
+       names.arg = sum_label$label, ylim = c(0,max(sum_label$count)),
+       xlab = "Label", ylab = "Count",
+       col = "Blue", main = "The distribution of labels")
+
 # # print the distribution in numbers
-# print(sum_label)
+print(sum_label)

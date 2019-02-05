@@ -16,6 +16,11 @@ rm(list = ls())
 
 # Load training data 
 testing_subset_train = read.csv("dataset/CIC2018_subset_train.csv", header=T, stringsAsFactors = FALSE)
+
+# replace Inf with NA
+is.na(testing_subset_train) <- sapply(testing_subset_train, is.infinite)
+
+# removed NA value
 testing_subset_train = na.omit(testing_subset_train)
 
 # Observe the data
@@ -59,31 +64,60 @@ print(sum_Label)
 
 
 
-# Feature Selection by using Boruta function
-sample_train=testing_subset_train[sample(nrow(testing_subset_train), replace=F, size=0.05*nrow(testing_subset_train)), ]
-library(Boruta)
-boruta.train <- Boruta(testing_subset_train$Label ~ ., data = testing_subset_train, doTrace = 2, maxRuns=100)
-print(boruta.train)
-plot(boruta.train)
-boruta.train$finalDecision
+# # Feature Selection by using Boruta function
+# sample_train=testing_subset_train[sample(nrow(testing_subset_train), replace=F, size=0.05*nrow(testing_subset_train)), ]
+# library(Boruta)
+# boruta.train <- Boruta(testing_subset_train$Label ~ ., data = testing_subset_train, doTrace = 2, maxRuns=100)
+# print(boruta.train)
+# plot(boruta.train)
+# boruta.train$finalDecision
+# 
+# 
+# #take a call on tentative features
+# boruta.bank <- TentativeRoughFix(boruta.train)
+# print(boruta.bank)
+# 
+# # plot with all the feature names written properly
+# plot(boruta.bank, xlab = "", xaxt = "n")
+# lz<-lapply(1:ncol(boruta.bank$ImpHistory),function(i)
+#   boruta.bank$ImpHistory[is.finite(boruta.bank$ImpHistory[,i]),i])
+# names(lz) <- colnames(boruta.bank$ImpHistory)
+# Labels <- sort(sapply(lz,median))
+# axis(side = 1,las=2,labels = names(Labels),
+#      at = 1:ncol(boruta.bank$ImpHistory), cex.axis = 0.7)
+# 
+# 
+# getSelectedAttributes(boruta.bank, withTentative = F)
+# bank_df <- attStats(boruta.bank)
+# print(bank_df)
+# 
+# saveRDS(object = boruta.train, file = "Boruta_feature_selection_on_testing_subset_train_2018.rds")
 
 
-#take a call on tentative features
-boruta.bank <- TentativeRoughFix(boruta.train)
-print(boruta.bank)
-
-# plot with all the feature names written properly
-plot(boruta.bank, xlab = "", xaxt = "n")
-lz<-lapply(1:ncol(boruta.bank$ImpHistory),function(i)
-  boruta.bank$ImpHistory[is.finite(boruta.bank$ImpHistory[,i]),i])
-names(lz) <- colnames(boruta.bank$ImpHistory)
-Labels <- sort(sapply(lz,median))
-axis(side = 1,las=2,labels = names(Labels),
-     at = 1:ncol(boruta.bank$ImpHistory), cex.axis = 0.7)
 
 
-getSelectedAttributes(boruta.bank, withTentative = F)
-bank_df <- attStats(boruta.bank)
-print(bank_df)
 
-saveRDS(object = boruta.train, file = "Boruta_feature_selection_on_testing_subset_train_2018.rds")
+# Feature Selection by using RFE function
+library("caret")
+library(randomForest)
+#sample_train=testing_subset_train[sample(nrow(testing_subset_train), replace=F, size=0.05*nrow(testing_subset_train)), ]
+control <- rfeControl(functions=rfFuncs, method="cv", number=10)
+rfe.train <- rfe(testing_subset_train[,c(1, 2, 4:79)], testing_subset_train[,80], sizes=1:25, rfeControl=control)
+rfe.train
+plot(rfe.train, type=c("g", "o"), cex = 1.0, col = 1:11)
+predictors(rfe.train)
+
+
+
+
+
+
+### testing code
+
+# to check if a column contains infinite value
+# is.finite.data.frame <- function(obj){
+#   sapply(obj,FUN = function(x) all(is.finite(x)))
+# }
+
+# calculate number of NA per column
+# colSums(is.na(testing_subset_train))

@@ -23,6 +23,9 @@ is.na(testing_subset_train) <- sapply(testing_subset_train, is.infinite)
 # removed NA value
 testing_subset_train = na.omit(testing_subset_train)
 
+# sort dataset with respect to date
+testing_subset_train = testing_subset_train[order(as.Date(testing_subset_train$Timestamp, format="%d/%m/%Y %I:%M:%S")),]
+
 # Observe the data
 names(testing_subset_train)
 

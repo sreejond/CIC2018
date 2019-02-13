@@ -144,10 +144,10 @@ testing_subset_test_imp_features <- testing_subset_test[, c("Timestamp", "Dst.Po
 
 
 # testing code for low power machine <---------------
-# inTrain <- createDataPartition(y = testing_subset_train_imp_features$Label, p = 0.01, list = FALSE)
-# inTest <- createDataPartition(y = testing_subset_test_imp_features$Label, p = 0.01, list = FALSE)
-# testing_subset_train_imp_features <- testing_subset_train_imp_features[inTrain,]
-# testing_subset_test_imp_features <- testing_subset_test_imp_features[inTest,]
+inTrain <- createDataPartition(y = testing_subset_train_imp_features$Label, p = 0.5, list = FALSE)
+inTest <- createDataPartition(y = testing_subset_test_imp_features$Label, p = 0.5, list = FALSE)
+testing_subset_train_imp_features <- testing_subset_train_imp_features[inTrain,]
+testing_subset_test_imp_features <- testing_subset_test_imp_features[inTest,]
 #------------>
 
 

@@ -28,6 +28,9 @@ testing_subset_train = na.omit(testing_subset_train)
 # sort dataset with respect to date
 testing_subset_train = testing_subset_train[order(as.Date(testing_subset_train$Timestamp, format="%d/%m/%Y %I:%M:%S")),]
 
+# convert timestamp to julian time
+testing_subset_train$Timestamp = as.numeric(as.POSIXct(testing_subset_train$Timestamp, format="%d/%m/%Y %I:%M:%S"))
+
 # Observe the data
 names(testing_subset_train)
 
@@ -81,6 +84,9 @@ testing_subset_test = na.omit(testing_subset_test)
 
 # sort dataset with respect to date
 testing_subset_test = testing_subset_test[order(as.Date(testing_subset_test$Timestamp, format="%d/%m/%Y %I:%M:%S")),]
+
+# convert timestamp to julian time
+testing_subset_test$Timestamp = as.numeric(as.POSIXct(testing_subset_test$Timestamp, format="%d/%m/%Y %I:%M:%S"))
 
 # Observe the data
 names(testing_subset_test)
@@ -144,10 +150,10 @@ testing_subset_test_imp_features <- testing_subset_test[, c("Timestamp", "Dst.Po
 
 
 # testing code for low power machine <---------------
-inTrain <- createDataPartition(y = testing_subset_train_imp_features$Label, p = 0.5, list = FALSE)
-inTest <- createDataPartition(y = testing_subset_test_imp_features$Label, p = 0.5, list = FALSE)
-testing_subset_train_imp_features <- testing_subset_train_imp_features[inTrain,]
-testing_subset_test_imp_features <- testing_subset_test_imp_features[inTest,]
+# inTrain <- createDataPartition(y = testing_subset_train_imp_features$Label, p = 0.5, list = FALSE)
+# inTest <- createDataPartition(y = testing_subset_test_imp_features$Label, p = 0.5, list = FALSE)
+# testing_subset_train_imp_features <- testing_subset_train_imp_features[inTrain,]
+# testing_subset_test_imp_features <- testing_subset_test_imp_features[inTest,]
 #------------>
 
 

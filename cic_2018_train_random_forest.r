@@ -104,11 +104,12 @@ testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-Slowloris"] 
 testing_subset_test$Label[testing_subset_test$Label == "DDOS attack-HOIC"] = "DDOS"
 testing_subset_test$Label[testing_subset_test$Label == "DDOS attack-LOIC-UDP"] = "DDOS"
 testing_subset_test$Label[testing_subset_test$Label == "DDoS attacks-LOIC-HTTP"] = "DDOS"
-testing_subset_test$Label[testing_subset_test$Label == "Brute Force -Web"] = "Web"
-testing_subset_test$Label[testing_subset_test$Label == "Brute Force -XSS"] = "Web"
-testing_subset_test$Label[testing_subset_test$Label == "SQL Injection"] = "Web"
+testing_subset_test$Label[testing_subset_test$Label == "Brute Force -Web"] = "Bruteforce"
+testing_subset_test$Label[testing_subset_test$Label == "Brute Force -XSS"] = "Bruteforce"
+testing_subset_test$Label[testing_subset_test$Label == "SQL Injection"] = "Bruteforce"
 testing_subset_test$Label[testing_subset_test$Label == "FTP-BruteForce"] = "Bruteforce"
 testing_subset_test$Label[testing_subset_test$Label == "SSH-Bruteforce"] = "Bruteforce"
+testing_subset_test$Label[testing_subset_test$Label == "Infilteration"] = "Bruteforce"
 testing_subset_test$Label = factor(testing_subset_test$Label)
 
 
@@ -149,6 +150,23 @@ testing_subset_test_imp_features <- testing_subset_test[, c("Timestamp", "Dst.Po
                                         "URG.Flag.Cnt", "Pkt.Len.Std", "Label" )]
 
 
+# testing_subset_train_imp_features <- testing_subset_train[, c("Timestamp", "Dst.Port", "Protocol", "Flow.Duration", "Tot.Fwd.Pkts", 
+#                                         "Tot.Bwd.Pkts", "TotLen.Fwd.Pkts", "TotLen.Bwd.Pkts", "Fwd.Pkt.Len.Max", 
+#                                         "Fwd.Pkt.Len.Min", "Fwd.Pkt.Len.Mean", "Fwd.Pkt.Len.Std", 
+#                                         "Bwd.Pkt.Len.Max", "Bwd.Pkt.Len.Min", "Bwd.Pkt.Len.Mean", "Bwd.Pkt.Len.Std", 
+#                                         "Flow.Byts.s", "Flow.Pkts.s", "Flow.IAT.Mean", "Flow.IAT.Std",
+#                                         "Flow.IAT.Max", "Flow.IAT.Min", "Fwd.IAT.Tot", "Fwd.IAT.Mean", 
+#                                         "Fwd.IAT.Std", "Fwd.IAT.Max", "Fwd.IAT.Min", "Label" )]
+# 
+# testing_subset_test_imp_features <- testing_subset_test[, c("Timestamp", "Dst.Port", "Protocol", "Flow.Duration", "Tot.Fwd.Pkts", 
+#                                         "Tot.Bwd.Pkts", "TotLen.Fwd.Pkts", "TotLen.Bwd.Pkts", "Fwd.Pkt.Len.Max", 
+#                                         "Fwd.Pkt.Len.Min", "Fwd.Pkt.Len.Mean", "Fwd.Pkt.Len.Std", 
+#                                         "Bwd.Pkt.Len.Max", "Bwd.Pkt.Len.Min", "Bwd.Pkt.Len.Mean", "Bwd.Pkt.Len.Std", 
+#                                         "Flow.Byts.s", "Flow.Pkts.s", "Flow.IAT.Mean", "Flow.IAT.Std",
+#                                         "Flow.IAT.Max", "Flow.IAT.Min", "Fwd.IAT.Tot", "Fwd.IAT.Mean", 
+#                                         "Fwd.IAT.Std", "Fwd.IAT.Max", "Fwd.IAT.Min", "Label" )]
+
+
 # testing code for low power machine <---------------
 # inTrain <- createDataPartition(y = testing_subset_train_imp_features$Label, p = 0.5, list = FALSE)
 # inTest <- createDataPartition(y = testing_subset_test_imp_features$Label, p = 0.5, list = FALSE)
@@ -157,9 +175,11 @@ testing_subset_test_imp_features <- testing_subset_test[, c("Timestamp", "Dst.Po
 #------------>
 
 
+ctrl <- trainControl(sampling = "down")
+
 # Apply random forest
-rfModelFit <- train(Label ~ ., method = "rf", data = testing_subset_train_imp_features)
-saveRDS(object = rfModelFit, file = "train_by_rf_testing_subset_train_25_features.rds")
+rfModelFit <- train(Label ~ ., method = "rf", data = testing_subset_train_imp_features, trControl = ctrl)
+saveRDS(object = rfModelFit, file = "train_by_rf_testing_subset_train_25_features_down_sampling.rds")
 #rfModelFit = readRDS("train_by_rf_testing_subset_train_25_features.rds")
 rfModelFit
 

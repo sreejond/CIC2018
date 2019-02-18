@@ -42,11 +42,12 @@ testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-Slowloris"
 testing_subset_train$Label[testing_subset_train$Label == "DDOS attack-HOIC"] = "DDOS"
 testing_subset_train$Label[testing_subset_train$Label == "DDOS attack-LOIC-UDP"] = "DDOS"
 testing_subset_train$Label[testing_subset_train$Label == "DDoS attacks-LOIC-HTTP"] = "DDOS"
-testing_subset_train$Label[testing_subset_train$Label == "Brute Force -Web"] = "Web"
-testing_subset_train$Label[testing_subset_train$Label == "Brute Force -XSS"] = "Web"
-testing_subset_train$Label[testing_subset_train$Label == "SQL Injection"] = "Web"
+testing_subset_train$Label[testing_subset_train$Label == "Brute Force -Web"] = "Bruteforce"
+testing_subset_train$Label[testing_subset_train$Label == "Brute Force -XSS"] = "Bruteforce"
+testing_subset_train$Label[testing_subset_train$Label == "SQL Injection"] = "Bruteforce"
 testing_subset_train$Label[testing_subset_train$Label == "FTP-BruteForce"] = "Bruteforce"
 testing_subset_train$Label[testing_subset_train$Label == "SSH-Bruteforce"] = "Bruteforce"
+testing_subset_test$Label[testing_subset_test$Label == "Infilteration"] = "Bruteforce"
 testing_subset_train$Label = factor(testing_subset_train$Label)
 
 

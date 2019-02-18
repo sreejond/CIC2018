@@ -88,10 +88,12 @@ train_raw = read.csv("dataset/CIC2018_Full.csv", header=T)
 
 library("caret")
 
-inTrain <- createDataPartition(y = train_raw$Label, p = 0.2, list = FALSE)
-inTest <- createDataPartition(y = train_raw$Label, p = 0.2, list = FALSE)
-testing_subset_train <- train_raw[inTrain,]
-testing_subset_test <- train_raw[inTest,]
+inTrain <- createDataPartition(y = train_raw$Label, p = 0.4, list = FALSE)
+testing_subset <- train_raw[inTrain,]
+#inTest <- createDataPartition(y = train_raw$Label, p = 0.2, list = FALSE)
+inTrain <- createDataPartition(y = testing_subset$Label, p = 0.5, list = FALSE)
+testing_subset_train <- testing_subset[inTrain,]
+testing_subset_test <- testing_subset[-inTrain,]
 
 # save the subset dataset of training and testing
 write.csv(testing_subset_train, file = "CIC2018_subset_train.csv", row.names=FALSE)

@@ -47,7 +47,7 @@ testing_subset_train$Label[testing_subset_train$Label == "Brute Force -XSS"] = "
 testing_subset_train$Label[testing_subset_train$Label == "SQL Injection"] = "Bruteforce"
 testing_subset_train$Label[testing_subset_train$Label == "FTP-BruteForce"] = "Bruteforce"
 testing_subset_train$Label[testing_subset_train$Label == "SSH-Bruteforce"] = "Bruteforce"
-testing_subset_test$Label[testing_subset_test$Label == "Infilteration"] = "Bruteforce"
+testing_subset_train$Label[testing_subset_train$Label == "Infilteration"] = "Bruteforce"
 testing_subset_train$Label = factor(testing_subset_train$Label)
 
 

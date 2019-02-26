@@ -17,7 +17,7 @@ library(randomForest)
 rm(list = ls())
 
 # Load training data 
-testing_subset_train = read.csv("dataset/CIC2018_subset_train.csv", header=T, stringsAsFactors = FALSE)
+testing_subset_train = read.csv("dataset/CIC2018_Downsample.csv", header=T, stringsAsFactors = FALSE)
 
 # replace Inf with NA
 is.na(testing_subset_train) <- sapply(testing_subset_train, is.infinite)
@@ -40,19 +40,19 @@ names(testing_subset_train)
 # Label preprocess
 # The result is classified into 4 groups 
 # Subsetting the Label variable into 4 groups.
-testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-GoldenEye"] = "DOS"
-testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-Hulk"] = "DOS"
-testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-SlowHTTPTest"] = "DOS"
-testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-Slowloris"] = "DOS"
-testing_subset_train$Label[testing_subset_train$Label == "DDOS attack-HOIC"] = "DDOS"
-testing_subset_train$Label[testing_subset_train$Label == "DDOS attack-LOIC-UDP"] = "DDOS"
-testing_subset_train$Label[testing_subset_train$Label == "DDoS attacks-LOIC-HTTP"] = "DDOS"
-testing_subset_train$Label[testing_subset_train$Label == "Brute Force -Web"] = "Bruteforce"
-testing_subset_train$Label[testing_subset_train$Label == "Brute Force -XSS"] = "Bruteforce"
-testing_subset_train$Label[testing_subset_train$Label == "SQL Injection"] = "Bruteforce"
-testing_subset_train$Label[testing_subset_train$Label == "FTP-BruteForce"] = "Bruteforce"
-testing_subset_train$Label[testing_subset_train$Label == "SSH-Bruteforce"] = "Bruteforce"
-testing_subset_train$Label[testing_subset_train$Label == "Infilteration"] = "Bruteforce"
+# testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-GoldenEye"] = "DOS"
+# testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-Hulk"] = "DOS"
+# testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-SlowHTTPTest"] = "DOS"
+# testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-Slowloris"] = "DOS"
+# testing_subset_train$Label[testing_subset_train$Label == "DDOS attack-HOIC"] = "DDOS"
+# testing_subset_train$Label[testing_subset_train$Label == "DDOS attack-LOIC-UDP"] = "DDOS"
+# testing_subset_train$Label[testing_subset_train$Label == "DDoS attacks-LOIC-HTTP"] = "DDOS"
+# testing_subset_train$Label[testing_subset_train$Label == "Brute Force -Web"] = "Bruteforce"
+# testing_subset_train$Label[testing_subset_train$Label == "Brute Force -XSS"] = "Bruteforce"
+# testing_subset_train$Label[testing_subset_train$Label == "SQL Injection"] = "Bruteforce"
+# testing_subset_train$Label[testing_subset_train$Label == "FTP-BruteForce"] = "Bruteforce"
+# testing_subset_train$Label[testing_subset_train$Label == "SSH-Bruteforce"] = "Bruteforce"
+# testing_subset_train$Label[testing_subset_train$Label == "Infilteration"] = "Bruteforce"
 testing_subset_train$Label = factor(testing_subset_train$Label)
 
 
@@ -98,19 +98,19 @@ names(testing_subset_test)
 # Label preprocess
 # The result is classified into 4 groups 
 # Subsetting the Label variable into 4 groups.
-testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-GoldenEye"] = "DOS"
-testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-Hulk"] = "DOS"
-testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-SlowHTTPTest"] = "DOS"
-testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-Slowloris"] = "DOS"
-testing_subset_test$Label[testing_subset_test$Label == "DDOS attack-HOIC"] = "DDOS"
-testing_subset_test$Label[testing_subset_test$Label == "DDOS attack-LOIC-UDP"] = "DDOS"
-testing_subset_test$Label[testing_subset_test$Label == "DDoS attacks-LOIC-HTTP"] = "DDOS"
-testing_subset_test$Label[testing_subset_test$Label == "Brute Force -Web"] = "Bruteforce"
-testing_subset_test$Label[testing_subset_test$Label == "Brute Force -XSS"] = "Bruteforce"
-testing_subset_test$Label[testing_subset_test$Label == "SQL Injection"] = "Bruteforce"
-testing_subset_test$Label[testing_subset_test$Label == "FTP-BruteForce"] = "Bruteforce"
-testing_subset_test$Label[testing_subset_test$Label == "SSH-Bruteforce"] = "Bruteforce"
-testing_subset_test$Label[testing_subset_test$Label == "Infilteration"] = "Bruteforce"
+# testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-GoldenEye"] = "DOS"
+# testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-Hulk"] = "DOS"
+# testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-SlowHTTPTest"] = "DOS"
+# testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-Slowloris"] = "DOS"
+# testing_subset_test$Label[testing_subset_test$Label == "DDOS attack-HOIC"] = "DDOS"
+# testing_subset_test$Label[testing_subset_test$Label == "DDOS attack-LOIC-UDP"] = "DDOS"
+# testing_subset_test$Label[testing_subset_test$Label == "DDoS attacks-LOIC-HTTP"] = "DDOS"
+# testing_subset_test$Label[testing_subset_test$Label == "Brute Force -Web"] = "Bruteforce"
+# testing_subset_test$Label[testing_subset_test$Label == "Brute Force -XSS"] = "Bruteforce"
+# testing_subset_test$Label[testing_subset_test$Label == "SQL Injection"] = "Bruteforce"
+# testing_subset_test$Label[testing_subset_test$Label == "FTP-BruteForce"] = "Bruteforce"
+# testing_subset_test$Label[testing_subset_test$Label == "SSH-Bruteforce"] = "Bruteforce"
+# testing_subset_test$Label[testing_subset_test$Label == "Infilteration"] = "Bruteforce"
 testing_subset_test$Label = factor(testing_subset_test$Label)
 
 
@@ -176,11 +176,12 @@ testing_subset_test_imp_features <- testing_subset_test[, c("Timestamp", "Dst.Po
 #------------>
 
 
-ctrl <- trainControl(sampling = "down")
+#ctrl <- trainControl(sampling = "down")
 
 # Apply random forest
-rfModelFit <- train(Label ~ ., method = "rf", data = testing_subset_train_imp_features, trControl = ctrl)
-saveRDS(object = rfModelFit, file = "train_by_rf_testing_subset_train_25_features_down_sampling.rds")
+rfModelFit <- train(Label ~ ., method = "rf", data = testing_subset_train_imp_features)
+#rfModelFit <- train(Label ~ ., method = "rf", data = testing_subset_train_imp_features, trControl = ctrl)
+saveRDS(object = rfModelFit, file = "train_by_rf_testing_subset_train_25_features_downsample.rds")
 #rfModelFit = readRDS("train_by_rf_testing_subset_train_25_features.rds")
 rfModelFit
 
@@ -198,3 +199,8 @@ round(prop.table(A,1)*100, 2)
 
 # accuracy on testing set
 mean(pred == testing_subset_test_imp_features$Label)
+
+
+
+
+# subset(test_test, Label == "Benign")

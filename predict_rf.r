@@ -83,6 +83,8 @@ getTree(rfModelFit$finalModel, k = 2)
 
 pred <- predict(rfModelFit, testing_subset_test_imp_features); 
 
+levels(pred) = levels(testing_subset_test_imp_features$Label)
+
 testing_subset_test_imp_features$predRight <- pred == testing_subset_test_imp_features$Label
 
 # accuracy on testing set

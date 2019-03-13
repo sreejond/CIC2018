@@ -188,7 +188,7 @@ testing_subset_test_imp_features <- testing_subset_test[, c("Timestamp", "Dst.Po
 numFolds <- trainControl(method = "cv", number = 10, classProbs=TRUE)
 tunegrid <- expand.grid(.mtry=c(1:10))
 
-rfModelFit = train(Label ~ ., data = testing_subset_train_imp_features, method = "rf", metric = "AUC", trControl = numFolds, tuneGrid = tunegrid)
+rfModelFit = train(Label ~ ., data = testing_subset_train_imp_features, method = "rf", metric = "ROC", trControl = numFolds, tuneGrid = tunegrid)
 
 
 getTree(rfModelFit$finalModel, k = 2)

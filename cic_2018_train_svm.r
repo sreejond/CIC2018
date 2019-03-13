@@ -40,20 +40,6 @@ names(testing_subset_train)
 # Label preprocess
 # The result is classified into 4 groups 
 # Subsetting the Label variable into 4 groups.
-# testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-GoldenEye"] = "DOS"
-# testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-Hulk"] = "DOS"
-# testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-SlowHTTPTest"] = "DOS"
-# testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-Slowloris"] = "DOS"
-# testing_subset_train$Label[testing_subset_train$Label == "DDOS attack-HOIC"] = "DDOS"
-# testing_subset_train$Label[testing_subset_train$Label == "DDOS attack-LOIC-UDP"] = "DDOS"
-# testing_subset_train$Label[testing_subset_train$Label == "DDoS attacks-LOIC-HTTP"] = "DDOS"
-# testing_subset_train$Label[testing_subset_train$Label == "Brute Force -Web"] = "Bruteforce"
-# testing_subset_train$Label[testing_subset_train$Label == "Brute Force -XSS"] = "Bruteforce"
-# testing_subset_train$Label[testing_subset_train$Label == "SQL Injection"] = "Bruteforce"
-# testing_subset_train$Label[testing_subset_train$Label == "FTP-BruteForce"] = "Bruteforce"
-# testing_subset_train$Label[testing_subset_train$Label == "SSH-Bruteforce"] = "Bruteforce"
-# testing_subset_train$Label[testing_subset_train$Label == "Infilteration"] = "Bruteforce"
-
 testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-GoldenEye"] = "DoS_attacks_GoldenEye"
 testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-Hulk"] = "DoS_attacks_Hulk"
 testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-SlowHTTPTest"] = "DoS_attacks_SlowHTTPTest"
@@ -112,20 +98,6 @@ names(testing_subset_test)
 # Label preprocess
 # The result is classified into 4 groups 
 # Subsetting the Label variable into 4 groups.
-# testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-GoldenEye"] = "DOS"
-# testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-Hulk"] = "DOS"
-# testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-SlowHTTPTest"] = "DOS"
-# testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-Slowloris"] = "DOS"
-# testing_subset_test$Label[testing_subset_test$Label == "DDOS attack-HOIC"] = "DDOS"
-# testing_subset_test$Label[testing_subset_test$Label == "DDOS attack-LOIC-UDP"] = "DDOS"
-# testing_subset_test$Label[testing_subset_test$Label == "DDoS attacks-LOIC-HTTP"] = "DDOS"
-# testing_subset_test$Label[testing_subset_test$Label == "Brute Force -Web"] = "Bruteforce"
-# testing_subset_test$Label[testing_subset_test$Label == "Brute Force -XSS"] = "Bruteforce"
-# testing_subset_test$Label[testing_subset_test$Label == "SQL Injection"] = "Bruteforce"
-# testing_subset_test$Label[testing_subset_test$Label == "FTP-BruteForce"] = "Bruteforce"
-# testing_subset_test$Label[testing_subset_test$Label == "SSH-Bruteforce"] = "Bruteforce"
-# testing_subset_test$Label[testing_subset_test$Label == "Infilteration"] = "Bruteforce"
-
 testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-GoldenEye"] = "DoS_attacks_GoldenEye"
 testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-Hulk"] = "DoS_attacks_Hulk"
 testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-SlowHTTPTest"] = "DoS_attacks_SlowHTTPTest"
@@ -214,7 +186,6 @@ testing_subset_test_imp_features <- testing_subset_test[, c("Timestamp", "Dst.Po
 # Setup for cross validation
 ctrl <- trainControl(method='cv',
                      number = 10,
-                     summaryFunction=twoClassSummary,
                      classProbs=TRUE)
 
 # Grid search to fine tune SVM

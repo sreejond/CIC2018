@@ -220,6 +220,8 @@ saveRDS(object = svm.tune, file = "cic2018_svmModel_downsample.rds")
 # mean(pred == testing_subset_test_imp_features$Label)
 
 
+svm.tune= readRDS("cic2018_svmModel_downsample.rds")
+
 # Predict Target Label
 pred <- predict(svm.tune, testing_subset_test_imp_features[,1:26], type='prob')[2]
 

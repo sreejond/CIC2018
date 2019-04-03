@@ -1,5 +1,10 @@
 # create training and testing subset
 
+# install.packages("lattice", repos = "http://cran.r-project.org")
+# install.packages("gtools", repos = "http://cran.r-project.org")
+# install.packages("caTools", repos = "http://cran.r-project.org")
+# install.packages("DMwR")
+
 # import libraries
 library(ggplot2)
 library("caret")
@@ -93,7 +98,8 @@ write.csv(train_raw_less_features, file = "dataset/CIC2018_Less_Features.csv", r
 
 
 # down sample dataset
-train_raw_downsample = downSample(train_raw_less_features, factor(train_raw_less_features$Label))
+#train_raw_downsample = downSample(train_raw_less_features, factor(train_raw_less_features$Label))
+train_raw_downsample = downSample(train_raw, factor(train_raw$Label))
 
 # save the down sample dataset
 write.csv(train_raw_downsample, file = "dataset/CIC2018_Downsample.csv", row.names=FALSE)

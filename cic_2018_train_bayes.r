@@ -3,7 +3,7 @@
 # import libraries
 library(ggplot2)
 library("caret")
-library(randomForest)
+library("klaR")
 
 
 
@@ -135,20 +135,20 @@ print(sum_Label)
 
 # Create final training data with the important features
 testing_subset_train_imp_features <- testing_subset_train[, c("Timestamp", "Dst.Port", "Init.Fwd.Win.Byts", "Fwd.Seg.Size.Min", "Fwd.Header.Len", 
-                                        "Init.Bwd.Win.Byts", "TotLen.Fwd.Pkts", "ACK.Flag.Cnt", "Subflow.Fwd.Byts", 
-                                        "RST.Flag.Cnt", "ECE.Flag.Cnt", "Bwd.Pkt.Len.Std", 
-                                        "Bwd.Header.Len", "Fwd.Pkt.Len.Max", "Fwd.IAT.Min", "Fwd.IAT.Tot", 
-                                        "Fwd.Pkt.Len.Mean", "Tot.Fwd.Pkts", "Subflow.Fwd.Pkts", "Fwd.Seg.Size.Avg",
-                                        "Fwd.IAT.Max", "Flow.Pkts.s", "Flow.Duration", "Fwd.IAT.Mean", 
-                                        "URG.Flag.Cnt", "Pkt.Len.Std", "Label" )]
+                                                              "Init.Bwd.Win.Byts", "TotLen.Fwd.Pkts", "ACK.Flag.Cnt", "Subflow.Fwd.Byts", 
+                                                              "RST.Flag.Cnt", "ECE.Flag.Cnt", "Bwd.Pkt.Len.Std", 
+                                                              "Bwd.Header.Len", "Fwd.Pkt.Len.Max", "Fwd.IAT.Min", "Fwd.IAT.Tot", 
+                                                              "Fwd.Pkt.Len.Mean", "Tot.Fwd.Pkts", "Subflow.Fwd.Pkts", "Fwd.Seg.Size.Avg",
+                                                              "Fwd.IAT.Max", "Flow.Pkts.s", "Flow.Duration", "Fwd.IAT.Mean", 
+                                                              "URG.Flag.Cnt", "Pkt.Len.Std", "Label" )]
 
 testing_subset_test_imp_features <- testing_subset_test[, c("Timestamp", "Dst.Port", "Init.Fwd.Win.Byts", "Fwd.Seg.Size.Min", "Fwd.Header.Len", 
-                                        "Init.Bwd.Win.Byts", "TotLen.Fwd.Pkts", "ACK.Flag.Cnt", "Subflow.Fwd.Byts", 
-                                        "RST.Flag.Cnt", "ECE.Flag.Cnt", "Bwd.Pkt.Len.Std", 
-                                        "Bwd.Header.Len", "Fwd.Pkt.Len.Max", "Fwd.IAT.Min", "Fwd.IAT.Tot", 
-                                        "Fwd.Pkt.Len.Mean", "Tot.Fwd.Pkts", "Subflow.Fwd.Pkts", "Fwd.Seg.Size.Avg",
-                                        "Fwd.IAT.Max", "Flow.Pkts.s", "Flow.Duration", "Fwd.IAT.Mean", 
-                                        "URG.Flag.Cnt", "Pkt.Len.Std", "Label" )]
+                                                            "Init.Bwd.Win.Byts", "TotLen.Fwd.Pkts", "ACK.Flag.Cnt", "Subflow.Fwd.Byts", 
+                                                            "RST.Flag.Cnt", "ECE.Flag.Cnt", "Bwd.Pkt.Len.Std", 
+                                                            "Bwd.Header.Len", "Fwd.Pkt.Len.Max", "Fwd.IAT.Min", "Fwd.IAT.Tot", 
+                                                            "Fwd.Pkt.Len.Mean", "Tot.Fwd.Pkts", "Subflow.Fwd.Pkts", "Fwd.Seg.Size.Avg",
+                                                            "Fwd.IAT.Max", "Flow.Pkts.s", "Flow.Duration", "Fwd.IAT.Mean", 
+                                                            "URG.Flag.Cnt", "Pkt.Len.Std", "Label" )]
 
 
 # testing_subset_train_imp_features <- testing_subset_train[, c("Timestamp", "Dst.Port", "Protocol", "Flow.Duration", "Tot.Fwd.Pkts", 
@@ -178,52 +178,43 @@ testing_subset_test_imp_features <- testing_subset_test[, c("Timestamp", "Dst.Po
 
 #ctrl <- trainControl(sampling = "smote")
 
-# Apply random forest
-# rfModelFit <- train(Label ~ ., method = "rf", data = testing_subset_train_imp_features)
-# #rfModelFit <- train(Label ~ ., method = "rf", data = testing_subset_train_imp_features, trControl = ctrl)
-# saveRDS(object = rfModelFit, file = "cic2018_rfModel_smote_downsample.rds")
-# #rfModelFit = readRDS("train_by_rf_testing_subset_train_25_features.rds")
-# rfModelFit
+# Apply naive bayes
 
-numFolds <- trainControl(method = "cv", number = 10, classProbs=TRUE)
-tunegrid <- expand.grid(.mtry=c(1:10))
+# set up 10-fold cross validation procedure
+train_control <- trainControl(
+  method = "cv", 
+  number = 10
+  )
+  
+search_grid <- expand.grid(
+  usekernel = c(TRUE, FALSE),
+  fL = 0:5,
+  adjust = seq(0, 5, by = 1)
+)
 
-rfModelFit = train(Label ~ ., data = testing_subset_train_imp_features, method = "rf", metric = "ROC", trControl = numFolds, tuneGrid = tunegrid)
-saveRDS(object = rfModelFit, file = "cic2018_rfModel_downsample_cv.rds")
-rfModelFit= readRDS("cic2018_rfModel_downsample_cv.rds")
-getTree(rfModelFit$finalModel, k = 2)
+bayesModel <- train(
+  x = testing_subset_train_imp_features[,1:26],
+  y = testing_subset_train_imp_features$Label,
+  method = "nb",
+  trControl = train_control,
+  tuneGrid = search_grid,
+  preProc = c("BoxCox", "center", "scale", "pca")
+)
 
-
-
-
-pred <- predict(rfModelFit, testing_subset_test_imp_features); 
-
-#levels(pred) = levels(testing_subset_test_imp_features$Label)
-
-testing_subset_test_imp_features$predRight <- pred == testing_subset_test_imp_features$Label
-A = table(pred, testing_subset_test_imp_features$Label)
-A
-round(prop.table(A,1)*100, 2)
-
-# accuracy on testing set
-mean(pred == testing_subset_test_imp_features$Label)
+saveRDS(object = bayesModel, file = "cic2018_bayesModel_downsample_cv.rds")
 
 
+# top 5 modesl
+nb.m2$results %>% 
+  top_n(5, wt = Accuracy) %>%
+  arrange(desc(Accuracy))
+
+# plot search grid results
+plot(nb.m2)
+
+# results for best model
+confusionMatrix(nb.m2)
 
 
-#new measurements
-# Model Performance Statistics
-pred_val <-prediction(pred, testing_subset_test_imp_features$Label)
-
-# Calculating Area under Curve
-perf_val <- performance(pred_val,'auc')
-perf_val
-
-# Calculating True Positive and False Positive Rate
-perf_val <- performance(pred_val, 'tpr', 'fpr')
-
-# Plot the ROC curve
-plot(perf_val, col = 'green', lwd = 1.5)
-
-
-# subset(test_test, Label == "Benign")
+pred <- predict(nb.m2, newdata = testing_subset_test_imp_features)
+confusionMatrix(pred, testing_subset_test_imp_features$Label)

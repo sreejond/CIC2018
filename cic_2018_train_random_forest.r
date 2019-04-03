@@ -189,7 +189,7 @@ numFolds <- trainControl(method = "cv", number = 10, classProbs=TRUE)
 tunegrid <- expand.grid(.mtry=c(1:10))
 
 rfModelFit = train(Label ~ ., data = testing_subset_train_imp_features, method = "rf", metric = "ROC", trControl = numFolds, tuneGrid = tunegrid)
-
+saveRDS(object = rfModelFit, file = "cic2018_rfModel_downsample.rds")
 
 getTree(rfModelFit$finalModel, k = 2)
 

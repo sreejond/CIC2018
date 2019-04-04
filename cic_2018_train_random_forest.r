@@ -231,3 +231,7 @@ macroPrecision = mean(precision)
 macroRecall = mean(recall)
 macroF1 = mean(f1)
 data.frame(macroPrecision, macroRecall, macroF1)
+
+## auc
+library(pROC)
+auc = multiclass.roc(as.numeric(testing_subset_test_imp_features$Label), as.numeric(pred))

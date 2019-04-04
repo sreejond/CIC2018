@@ -205,25 +205,29 @@ A = table(pred, testing_subset_test_imp_features$Label)
 A
 round(prop.table(A,1)*100, 2)
 
-# accuracy on testing set
-mean(pred == testing_subset_test_imp_features$Label)
 
 
 
+## model measurements
 
-#new measurements
-# Model Performance Statistics
-pred_val <-prediction(pred, testing_subset_test_imp_features$Label)
-
-# Calculating Area under Curve
-perf_val <- performance(pred_val,'auc')
-perf_val
-
-# Calculating True Positive and False Positive Rate
-perf_val <- performance(pred_val, 'tpr', 'fpr')
-
-# Plot the ROC curve
-plot(perf_val, col = 'green', lwd = 1.5)
+n = sum(A) # number of instances
+nc = nrow(A) # number of classes
+diag = diag(A) # number of correctly classified instances per class 
+rowsums = apply(A, 1, sum) # number of instances per class
+colsums = apply(A, 2, sum) # number of predictions per class
+p = rowsums / n # distribution of instances over the actual classes
+q = colsums / n # distribution of instances over the predicted classes
 
 
-# subset(test_test, Label == "Benign")
+accuracy = sum(diag) / n 
+## Per-class Precision, Recall, and F-1
+precision = diag / colsums 
+recall = diag / rowsums 
+f1 = 2 * precision * recall / (precision + recall) 
+data.frame(precision, recall, f1) 
+
+## Macro-averaged Metrics
+macroPrecision = mean(precision)
+macroRecall = mean(recall)
+macroF1 = mean(f1)
+data.frame(macroPrecision, macroRecall, macroF1)

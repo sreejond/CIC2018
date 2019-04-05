@@ -183,23 +183,21 @@ testing_subset_test_imp_features <- testing_subset_test[, c("Timestamp", "Dst.Po
 # #svmModelFit = readRDS("train_by_rf_testing_subset_train_25_features.rds")
 # svmModelFit
 
-# Setup for cross validation
-ctrl <- trainControl(method='cv',
-                     number = 10,
-                     classProbs=TRUE)
+# # Setup for cross validation
+# ctrl <- trainControl(method='cv',
+#                      number = 10,
+#                      classProbs=TRUE)
+# 
+# # Grid search to fine tune SVM
+# grid <- expand.grid(sigma = c(.01, .015, 0.2),
+#                     C = c(0.75, 0.9, 1, 1.1, 1.25)
+# )
 
-# Grid search to fine tune SVM
-grid <- expand.grid(sigma = c(.01, .015, 0.2),
-                    C = c(0.75, 0.9, 1, 1.1, 1.25)
-)
+numFolds <- trainControl(method = "cv", number = 10, classProbs=TRUE)
+tunegrid <- expand.grid(.mtry=c(1:10))
 
 #Train SVM
-svm.tune <- train(x=testing_subset_train_imp_features[,1:26],
-                  y= testing_subset_train_imp_features$Label,
-                  method = 'svmRadial',
-                  metric = 'ROC',
-                  tuneGrid = grid,
-                  trControl=ctrl)
+svm.tune <- train(Label ~ ., data = testing_subset_train_imp_features, method = "svmRadial", metric = "ROC", trControl = numFolds)
 
 svm.tune
 saveRDS(object = svm.tune, file = "cic2018_svmModel_downsample_cv.rds")

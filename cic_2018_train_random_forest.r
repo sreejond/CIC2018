@@ -190,6 +190,7 @@ tunegrid <- expand.grid(.mtry=c(1:10))
 
 rfModelFit = train(Label ~ ., data = testing_subset_train_imp_features, method = "rf", metric = "ROC", trControl = numFolds, tuneGrid = tunegrid)
 saveRDS(object = rfModelFit, file = "cic2018_rfModel_downsample_cv.rds")
+
 rfModelFit= readRDS("cic2018_rfModel_downsample_cv.rds")
 getTree(rfModelFit$finalModel, k = 2)
 
@@ -201,7 +202,7 @@ pred <- predict(rfModelFit, testing_subset_test_imp_features);
 #levels(pred) = levels(testing_subset_test_imp_features$Label)
 
 testing_subset_test_imp_features$predRight <- pred == testing_subset_test_imp_features$Label
-A = table(pred, testing_subset_test_imp_features$Label)
+A = table(testing_subset_test_imp_features$Label, pred)
 A
 round(prop.table(A,1)*100, 2)
 
@@ -223,7 +224,7 @@ accuracy = sum(diag) / n
 ## Per-class Precision, Recall, and F-1
 precision = diag / colsums 
 recall = diag / rowsums 
-f1 = 2 * precision * recall / (precision + recall) 
+f1 = 2 * ((precision * recall) / (precision + recall))
 data.frame(precision, recall, f1) 
 
 ## Macro-averaged Metrics

@@ -197,7 +197,7 @@ numFolds <- trainControl(method = "cv", number = 10, classProbs=TRUE)
 tunegrid <- expand.grid(.mtry=c(1:10))
 
 #Train SVM
-svm.tune <- train(Label ~ ., data = testing_subset_train_imp_features, method = "svmRadial", trControl = numFolds, preProcess = c("center", "scale"), tuneLength = 10)
+svm.tune <- train(Label ~ ., data = testing_subset_train_imp_features, method = "svmLinear", trControl = numFolds, preProcess = c("center", "scale"), tuneLength = 10)
 
 svm.tune
 saveRDS(object = svm.tune, file = "cic2018_svmModel_downsample_cv.rds")

@@ -46,15 +46,15 @@ testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-Hulk"] = "
 testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-SlowHTTPTest"] = "DoS_attacks_SlowHTTPTest"
 testing_subset_train$Label[testing_subset_train$Label == "DoS attacks-Slowloris"] = "DoS_attacks_Slowloris"
 testing_subset_train$Label[testing_subset_train$Label == "DDOS attack-HOIC"] = "DDOS_attack_HOIC"
-# testing_subset_train$Label[testing_subset_train$Label == "DDOS attack-LOIC-UDP"] = "DDOS-attack-LOIC-UDP"
+testing_subset_train$Label[testing_subset_train$Label == "DDOS attack-LOIC-UDP"] = "DDOS_attack_LOIC_UDP"
 testing_subset_train$Label[testing_subset_train$Label == "DDoS attacks-LOIC-HTTP"] = "DDoS_attacks_LOIC_HTTP"
-# testing_subset_train$Label[testing_subset_train$Label == "Brute Force -Web"] = "Brute-Force-Web"
-# testing_subset_train$Label[testing_subset_train$Label == "Brute Force -XSS"] = "Brute-Force-XSS"
-# testing_subset_train$Label[testing_subset_train$Label == "SQL Injection"] = "Bruteforce"
+testing_subset_train$Label[testing_subset_train$Label == "Brute Force -Web"] = "Brute_Force_Web"
+testing_subset_train$Label[testing_subset_train$Label == "Brute Force -XSS"] = "Brute_Force_XSS"
+testing_subset_train$Label[testing_subset_train$Label == "SQL Injection"] = "SQL_Injection"
 testing_subset_train$Label[testing_subset_train$Label == "FTP-BruteForce"] = "FTP_BruteForce"
 testing_subset_train$Label[testing_subset_train$Label == "SSH-Bruteforce"] = "SSH_Bruteforce"
-# testing_subset_train$Label[testing_subset_train$Label == "Infilteration"] = "Bruteforce"
-testing_subset_train$Label = factor(testing_subset_train$Label, levels = c("Benign", "Bot", "DDOS_attack_HOIC", "DDoS_attacks_LOIC_HTTP", "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", "FTP_BruteForce", "Infilteration", "SSH_Bruteforce"))
+#testing_subset_train$Label[testing_subset_train$Label == "Infilteration"] = "Bruteforce"
+testing_subset_train$Label = factor(testing_subset_train$Label, levels = c("Benign", "Bot", "DDOS_attack_HOIC", "DDOS_attack_LOIC_UDP", "DDoS_attacks_LOIC_HTTP", "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", "Brute_Force_Web", "Brute_Force_XSS", "SQL_Injection", "FTP_BruteForce", "Infilteration", "SSH_Bruteforce"))
 
 
 
@@ -69,9 +69,7 @@ library(nnet)
 # Encode as a one hot vector multilabel data
 testing_subset_train_encoded <- cbind(testing_subset_train_scaled[, 1:79], class.ind(as.factor(testing_subset_train_scaled$Label)))
 # Set labels name
-names(testing_subset_train_encoded) <- c(names(testing_subset_train_scaled)[1:79], "Benign", "Bot", "DDOS_attack_HOIC", "DDoS_attacks_LOIC_HTTP", 
-                                         "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", 
-                                         "FTP_BruteForce", "Infilteration", "SSH_Bruteforce")
+names(testing_subset_train_encoded) <- c(names(testing_subset_train_scaled)[1:79], "Benign", "Bot", "DDOS_attack_HOIC", "DDOS_attack_LOIC_UDP", "DDoS_attacks_LOIC_HTTP", "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", "Brute_Force_Web", "Brute_Force_XSS", "SQL_Injection", "FTP_BruteForce", "Infilteration", "SSH_Bruteforce")
 
 
 
@@ -107,15 +105,15 @@ testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-Hulk"] = "Do
 testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-SlowHTTPTest"] = "DoS_attacks_SlowHTTPTest"
 testing_subset_test$Label[testing_subset_test$Label == "DoS attacks-Slowloris"] = "DoS_attacks_Slowloris"
 testing_subset_test$Label[testing_subset_test$Label == "DDOS attack-HOIC"] = "DDOS_attack_HOIC"
-# testing_subset_test$Label[testing_subset_test$Label == "DDOS attack-LOIC-UDP"] = "DDOS"
+testing_subset_test$Label[testing_subset_test$Label == "DDOS attack-LOIC-UDP"] = "DDOS_attack_LOIC_UDP"
 testing_subset_test$Label[testing_subset_test$Label == "DDoS attacks-LOIC-HTTP"] = "DDoS_attacks_LOIC_HTTP"
-# testing_subset_test$Label[testing_subset_test$Label == "Brute Force -Web"] = "Bruteforce"
-# testing_subset_test$Label[testing_subset_test$Label == "Brute Force -XSS"] = "Bruteforce"
-# testing_subset_test$Label[testing_subset_test$Label == "SQL Injection"] = "Bruteforce"
+testing_subset_test$Label[testing_subset_test$Label == "Brute Force -Web"] = "Brute_Force_Web"
+testing_subset_test$Label[testing_subset_test$Label == "Brute Force -XSS"] = "Brute_Force_XSS"
+testing_subset_test$Label[testing_subset_test$Label == "SQL Injection"] = "SQL_Injection"
 testing_subset_test$Label[testing_subset_test$Label == "FTP-BruteForce"] = "FTP_BruteForce"
 testing_subset_test$Label[testing_subset_test$Label == "SSH-Bruteforce"] = "SSH_Bruteforce"
 # testing_subset_test$Label[testing_subset_test$Label == "Infilteration"] = "Bruteforce"
-testing_subset_test$Label = factor(testing_subset_test$Label, levels = c("Benign", "Bot", "DDOS_attack_HOIC", "DDoS_attacks_LOIC_HTTP", "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", "FTP_BruteForce", "Infilteration", "SSH_Bruteforce"))
+testing_subset_test$Label = factor(testing_subset_test$Label,levels = c("Benign", "Bot", "DDOS_attack_HOIC", "DDOS_attack_LOIC_UDP", "DDoS_attacks_LOIC_HTTP", "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", "Brute_Force_Web", "Brute_Force_XSS", "SQL_Injection", "FTP_BruteForce", "Infilteration", "SSH_Bruteforce"))
 
 
 
@@ -129,9 +127,7 @@ testing_subset_test_scaled$Label <- testing_subset_test$Label
 # Encode as a one hot vector multilabel data
 testing_subset_test_encoded <- cbind(testing_subset_test_scaled[, 1:79], class.ind(as.factor(testing_subset_test_scaled$Label)))
 # Set labels name
-names(testing_subset_test_encoded) <- c(names(testing_subset_test_scaled)[1:79], "Benign", "Bot", "DDOS_attack_HOIC", "DDoS_attacks_LOIC_HTTP", 
-                                         "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", 
-                                         "FTP_BruteForce", "Infilteration", "SSH_Bruteforce")
+names(testing_subset_test_encoded) <- c(names(testing_subset_test_scaled)[1:79], "Benign", "Bot", "DDOS_attack_HOIC", "DDOS_attack_LOIC_UDP", "DDoS_attacks_LOIC_HTTP", "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", "Brute_Force_Web", "Brute_Force_XSS", "SQL_Injection", "FTP_BruteForce", "Infilteration", "SSH_Bruteforce")
 
 
 
@@ -146,9 +142,7 @@ testing_subset_train_imp_features <- testing_subset_train_encoded[, c("Timestamp
                                                               "Fwd.Pkt.Len.Mean", "Tot.Fwd.Pkts", "Subflow.Fwd.Pkts", "Fwd.Seg.Size.Avg",
                                                               "Fwd.IAT.Max", "Flow.Pkts.s", "Flow.Duration", "Fwd.IAT.Mean", 
                                                               "URG.Flag.Cnt", "Pkt.Len.Std",  
-                                                              "Benign", "Bot", "DDOS_attack_HOIC", "DDoS_attacks_LOIC_HTTP", 
-                                                              "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", 
-                                                              "FTP_BruteForce", "Infilteration", "SSH_Bruteforce")]
+                                                              "Benign", "Bot", "DDOS_attack_HOIC", "DDOS_attack_LOIC_UDP", "DDoS_attacks_LOIC_HTTP", "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", "Brute_Force_Web", "Brute_Force_XSS", "SQL_Injection", "FTP_BruteForce", "Infilteration", "SSH_Bruteforce")]
 
 testing_subset_test_imp_features <- testing_subset_test_encoded[, c("Timestamp", "Dst.Port", "Init.Fwd.Win.Byts", "Fwd.Seg.Size.Min", "Fwd.Header.Len", 
                                                             "Init.Bwd.Win.Byts", "TotLen.Fwd.Pkts", "ACK.Flag.Cnt", "Subflow.Fwd.Byts", 
@@ -157,9 +151,7 @@ testing_subset_test_imp_features <- testing_subset_test_encoded[, c("Timestamp",
                                                             "Fwd.Pkt.Len.Mean", "Tot.Fwd.Pkts", "Subflow.Fwd.Pkts", "Fwd.Seg.Size.Avg",
                                                             "Fwd.IAT.Max", "Flow.Pkts.s", "Flow.Duration", "Fwd.IAT.Mean", 
                                                             "URG.Flag.Cnt", "Pkt.Len.Std",
-                                                            "Benign", "Bot", "DDOS_attack_HOIC", "DDoS_attacks_LOIC_HTTP", 
-                                                            "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", 
-                                                            "FTP_BruteForce", "Infilteration", "SSH_Bruteforce")]
+                                                            "Benign", "Bot", "DDOS_attack_HOIC", "DDOS_attack_LOIC_UDP", "DDoS_attacks_LOIC_HTTP", "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", "Brute_Force_Web", "Brute_Force_XSS", "SQL_Injection", "FTP_BruteForce", "Infilteration", "SSH_Bruteforce")]
 
 
 # testing_subset_train_imp_features <- testing_subset_train_encoded[, c("Timestamp", "Dst.Port", "Protocol", "Flow.Duration", "Tot.Fwd.Pkts",
@@ -196,11 +188,11 @@ testing_subset_test_imp_features <- testing_subset_test_encoded[, c("Timestamp",
 
 
 n <- names(testing_subset_train_imp_features)
-f <- as.formula(paste("Benign + Bot + DDOS_attack_HOIC + DDoS_attacks_LOIC_HTTP + DoS_attacks_GoldenEye + DoS_attacks_Hulk + DoS_attacks_SlowHTTPTest + DoS_attacks_Slowloris + FTP_BruteForce + Infilteration + SSH_Bruteforce ~",
-                      paste(n[!n %in% c("Benign", "Bot", "DDOS_attack_HOIC", "DDoS_attacks_LOIC_HTTP", "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", "FTP_BruteForce", "Infilteration", "SSH_Bruteforce")], collapse = " + ")))
+f <- as.formula(paste("Benign + Bot + DDOS_attack_HOIC + DDOS_attack_LOIC_UDP + DDoS_attacks_LOIC_HTTP + DoS_attacks_GoldenEye + DoS_attacks_Hulk + DoS_attacks_SlowHTTPTest + DoS_attacks_Slowloris + Brute_Force_Web + Brute_Force_XSS + SQL_Injection + FTP_BruteForce + Infilteration + SSH_Bruteforce ~",
+                      paste(n[!n %in% c("Benign", "Bot", "DDOS_attack_HOIC", "DDOS_attack_LOIC_UDP", "DDoS_attacks_LOIC_HTTP", "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", "Brute_Force_Web", "Brute_Force_XSS", "SQL_Injection", "FTP_BruteForce", "Infilteration", "SSH_Bruteforce")], collapse = " + ")))
 f
 
-nnModel <- neuralnet(formula = f, data = testing_subset_train_imp_features, hidden = c(10, 5, 3, 2), linear.output = FALSE, threshold = 0.01, stepmax = 1e+07)
+nnModel <- neuralnet(formula = f, data = testing_subset_train_imp_features, hidden = c(10, 5, 2), linear.output = FALSE)#, threshold = 0.01, stepmax = 1e+07)
 saveRDS(object = nnModel, file = "cic2018_nnModel_downsample.rds")
 #nnModel = readRDS("nnModel_on_100_test_set_10-5-2.rds")
 nnModel$result.matrix

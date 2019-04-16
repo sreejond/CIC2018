@@ -212,6 +212,38 @@ params <- list(booster = "gbtree", objective = "multi:softprob", num_class = 15,
 # Calculate # of folds for cross-validation
 xgbcv <- xgb.cv(params = params, data = xgb_train, nrounds = 100, nfold = 5, showsd = TRUE, stratified = TRUE, print.every.n = 10, early_stop_round = 20, maximize = FALSE, prediction = TRUE)
 
+saveRDS(object = xgbcv, file = "cic2018_xgbcv_downsample.rds")
+
+xgbcv= readRDS("cic2018_xgbcv_downsample.rds")
+
+# Function to compute classification error
+classification_error <- function(conf_mat) {
+  conf_mat = as.matrix(conf_mat)
+  
+  error = 1 - sum(diag(conf_mat)) / sum(conf_mat)
+  
+  return (error)
+}
+
+# Mutate xgb output to deliver hard predictions
+xgb_train_preds <- data.frame(xgbcv$pred) %>% mutate(max = max.col(., ties.method = "last"), label = testing_subset_train_imp_features$Label + 1)
+
+# Examine output
+head(xgb_train_preds)
+
+# Confustion Matrix
+xgb_conf_mat <- table(true = testing_subset_train_imp_features$Label + 1, pred = xgb_train_preds$max)
+
+# Error 
+cat("XGB Training Classification Error Rate:", classification_error(xgb_conf_mat), "\n")
+
+# Automated confusion matrix using "caret"
+xgb_conf_mat_2 <- confusionMatrix(factor(xgb_train_preds$label),
+                                  factor(xgb_train_preds$max),
+                                  mode = "everything")
+
+print(xgb_conf_mat_2)
+
 # xgbModel <- xgboost(data = model.matrix(~ ., data = testing_subset_train_imp_features[,1:26]), 
 #                label = testing_subset_train_imp_features$Label, 
 #                eta = 0.1,
@@ -225,9 +257,6 @@ xgbcv <- xgb.cv(params = params, data = xgb_train, nrounds = 100, nfold = 5, sho
 #                num_class = 15,
 #                nthread = 3
 # )
-
-
-saveRDS(object = xgbModel, file = "cic2018_xgbModel_downsample.rds")
 
 
 

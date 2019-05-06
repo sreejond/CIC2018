@@ -2,7 +2,7 @@
 
 # import libraries
 library(ggplot2)
-library(caret)
+#library(caret)
 library(neuralnet)
 
 
@@ -192,7 +192,7 @@ f <- as.formula(paste("Benign + Bot + DDOS_attack_HOIC + DDOS_attack_LOIC_UDP + 
                       paste(n[!n %in% c("Benign", "Bot", "DDOS_attack_HOIC", "DDOS_attack_LOIC_UDP", "DDoS_attacks_LOIC_HTTP", "DoS_attacks_GoldenEye", "DoS_attacks_Hulk", "DoS_attacks_SlowHTTPTest", "DoS_attacks_Slowloris", "Brute_Force_Web", "Brute_Force_XSS", "SQL_Injection", "FTP_BruteForce", "Infilteration", "SSH_Bruteforce")], collapse = " + ")))
 f
 
-nnModel <- neuralnet(formula = f, data = testing_subset_train_imp_features, hidden = c(10, 5, 2), linear.output = FALSE)#, threshold = 0.01, stepmax = 1e+07)
+nnModel <- neuralnet(formula = f, data = testing_subset_train_imp_features, hidden = c(10, 5, 2), linear.output = FALSE, threshold = 0.3)
 saveRDS(object = nnModel, file = "cic2018_nnModel_downsample.rds")
 #nnModel = readRDS("nnModel_on_100_test_set_10-5-2.rds")
 nnModel$result.matrix
